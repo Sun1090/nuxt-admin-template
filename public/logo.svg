@@ -1,0 +1,33 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景透明 -->
+  
+  <!-- 外圈渐变定义 -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 圆形外框 -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#gradient1)" stroke-width="3"/>
+  
+  <!-- 中心人物图标（抽象） -->
+  <circle cx="100" cy="70" r="18" fill="url(#gradient1)"/>
+  <path d="M 100 90 Q 80 95, 75 115 L 75 130 L 85 130 L 85 115 Q 87 100, 100 95 Q 113 100, 115 115 L 115 130 L 125 130 L 125 115 Q 120 95, 100 90 Z" fill="url(#gradient1)"/>
+  
+  <!-- 网络连接节点 -->
+  <circle cx="60" cy="120" r="8" fill="#2563eb" opacity="0.8"/>
+  <circle cx="140" cy="120" r="8" fill="#f97316" opacity="0.8"/>
+  <circle cx="80" cy="155" r="8" fill="#2563eb" opacity="0.8"/>
+  <circle cx="120" cy="155" r="8" fill="#f97316" opacity="0.8"/>
+  
+  <!-- 连接线 -->
+  <line x1="100" y1="95" x2="60" y2="120" stroke="#2563eb" stroke-width="2" opacity="0.4"/>
+  <line x1="100" y1="95" x2="140" y2="120" stroke="#f97316" stroke-width="2" opacity="0.4"/>
+  <line x1="60" y1="120" x2="80" y2="155" stroke="#2563eb" stroke-width="2" opacity="0.4"/>
+  <line x1="140" y1="120" x2="120" y2="155" stroke="#f97316" stroke-width="2" opacity="0.4"/>
+  
+  <!-- 文字 LDA -->
+  <text x="100" y="185" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="url(#gradient1)">LDA</text>
+</svg>

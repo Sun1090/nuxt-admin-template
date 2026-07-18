@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-admin-template-scripts",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Nuxt Admin Template 管理脚本",
+  "scripts": {
+    "create-admin": "npx tsx create-admin.js",
+    "clear-db": "npx tsx clear-database.js",
+    "safe-migrate": "npx tsx safe-migrate.js",
+    "db:generate": "cd .. && npx drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "cd .. && npx drizzle-kit migrate --config=drizzle.config.ts"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
+    "postgres": "^3.4.7",
+    "prompts": "^2.4.2",
+    "tsx": "^4.7.0"
+  }
+}
