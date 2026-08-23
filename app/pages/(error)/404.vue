@@ -4,6 +4,7 @@ definePageMeta({
 })
 
 const router = useRouter()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -12,17 +13,16 @@ const router = useRouter()
       <h1 class="text-[7rem] font-bold leading-tight">
         404
       </h1>
-      <span class="font-medium">页面未找到！</span>
+      <span class="font-medium">{{ t('error.notFound') }}</span>
       <p class="text-center text-muted-foreground">
-        看起来您要找的页面<br>
-        不存在或可能已被删除。
+        {{ t('error.notFoundDesc') }}
       </p>
       <div class="mt-6 flex gap-4">
         <Button variant="outline" @click="router.back()">
-          返回
+          {{ t('error.goBack') }}
         </Button>
         <Button @click="router.push('/')">
-          返回首页
+          {{ t('error.backHome') }}
         </Button>
       </div>
     </div>

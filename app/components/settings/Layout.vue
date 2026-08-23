@@ -1,15 +1,15 @@
 <script setup lang="ts">
-
+const { t } = useI18n()
 </script>
 
 <template>
   <div class="pb-16 space-y-6">
     <div class="space-y-0.5">
       <h2 class="text-2xl font-bold tracking-tight">
-        设置
+        {{ t('settings.profile') }}
       </h2>
       <p class="text-muted-foreground">
-        管理您的帐户设置。
+        {{ t('settings.profileDesc') }}
       </p>
     </div>
     <Separator class="my-6" />

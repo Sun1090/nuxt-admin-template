@@ -11,13 +11,14 @@ definePageMeta({
   auth: false,
 })
 
+const { t } = useI18n()
 const isLoading = ref(false)
 const rememberMe = ref(false)
 const error = ref('')
 const auth = useAuth()
 const formSchema = toTypedSchema(z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().min(1, t('auth.username')),
+  password: z.string().min(1, t('auth.password')),
 }))
 const { handleSubmit, setValues, validate } = useForm({
   validationSchema: formSchema,
@@ -47,11 +48,7 @@ const onSubmit = handleSubmit(async (form) => {
     }
   }
   catch (err: any) {
-    error.value = err.message || '登录失败，请检查账号密码'
-
-    if (error.value.includes('密码') || error.value.includes('用户名')) {
-      form.password = ''
-    }
+    error.value = err.message || t('auth.loginFailed')
   }
   finally {
     isLoading.value = false
@@ -69,7 +66,7 @@ function init() {
       })
     }
     catch (e) {
-      console.error('解析 localStorage 数据失败:', e)
+      console.error(t('common.error'), e)
       window.localStorage.removeItem('accountInfo')
     }
   }
@@ -87,13 +84,13 @@ onMounted(() => {
         <div class="h-6 w-6 flex items-center justify-center rounded-md bg-primary text-primary-foreground">
           <img src="/logo.png">
         </div>
-        Nuxt Admin Template
+        {{ t('app.name') }}
       </NuxtLink>
       <div class="flex flex-col gap-6">
         <Card>
           <CardHeader class="text-center">
             <CardTitle class="text-xl">
-              欢 迎 登 录
+              {{ t('auth.welcome') }}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -101,10 +98,10 @@ onMounted(() => {
               <FormField v-slot="{ componentField }" name="username">
                 <FormItem>
                   <FormLabel class="text-sm">
-                    用户名
+                    {{ t('auth.username') }}
                   </FormLabel>
                   <FormControl>
-                    <Input class="h-7" type="text" placeholder="用户名" v-bind="componentField" />
+                    <Input class="h-7" type="text" :placeholder="t('auth.username')" v-bind="componentField" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,10 +109,10 @@ onMounted(() => {
               <FormField v-slot="{ componentField }" name="password">
                 <FormItem>
                   <FormLabel class="text-sm">
-                    密码
+                    {{ t('auth.password') }}
                   </FormLabel>
                   <FormControl>
-                    <PasswordInput class="h-7" placeholder="密码" v-bind="componentField" autocomplete="new-password" />
+                    <PasswordInput class="h-7" :placeholder="t('auth.password')" v-bind="componentField" autocomplete="new-password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,12 +120,12 @@ onMounted(() => {
               <div class="flex justify-between">
                 <span class="text-sm flex items-center gap-2">
                   <Checkbox v-model="rememberMe" />
-                  记住我
+                  {{ t('auth.rememberMe') }}
                 </span>
               </div>
               <Button type="submit" class="w-full" :disabled="isLoading">
                 <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-                登录
+                {{ t('auth.login') }}
               </Button>
             </form>
           </CardContent>

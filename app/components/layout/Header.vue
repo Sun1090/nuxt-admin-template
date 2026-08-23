@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
+const { t } = useI18n()
 
 const user: {
   name: string
@@ -11,75 +12,79 @@ const user: {
   avatar: '/avatars/avatartion.png',
 }
 
-// 完整的路径到中文标题映射
-const pathToChineseMap: Record<string, string> = {
-  // 仪表盘
-  'dashboard': '仪表盘',
+// URL 路径段到 i18n breadcrumb key 的映射
+const pathToBreadcrumbKey: Record<string, string> = {
+  'dashboard': 'breadcrumb.dashboard',
+  'systems': 'breadcrumb.systems',
+  'users': 'breadcrumb.users',
+  'roles': 'breadcrumb.roles',
+  'permissions': 'breadcrumb.permissions',
+  'api-keys': 'breadcrumb.apiKeys',
+  'api-logs': 'breadcrumb.apiLogs',
+  'email-templates': 'breadcrumb.emailTemplates',
+  'notifications': 'breadcrumb.notifications',
+  'database': 'breadcrumb.database',
+  'backup': 'breadcrumb.backup',
+  'manage': 'breadcrumb.manage',
+  'settings': 'breadcrumb.settings',
+  'profile': 'breadcrumb.profile',
+  'account': 'breadcrumb.account',
+  'appearance': 'breadcrumb.appearance',
+  'display': 'breadcrumb.display',
+  'user-status-logs': 'breadcrumb.userStatusLogs',
+  'system-settings': 'breadcrumb.systemSettings',
+  'create': 'breadcrumb.create',
+  'edit': 'breadcrumb.edit',
+  'detail': 'breadcrumb.detail',
+}
 
-  // 系统管理
-  'systems': '系统管理',
-  'users': '用户管理',
-  'roles': '角色管理',
-  'permissions': '权限管理',
-  'api-keys': 'API密钥',
-  'database': '数据库',
-  'backup': '备份',
-  'manage': '管理',
-  'settings': '设置',
-  'profile': '个人资料',
-  'account': '用户',
-  'appearance': '外观',
-  // 通用词汇
-  'create': '新建',
-  'edit': '编辑',
-  'detail': '详情',
-  'id': 'ID',
+function getBreadcrumbTitle(segment: string): string {
+  const key = pathToBreadcrumbKey[segment]
+  if (key) {
+    return t(key)
+  }
+  // 对于动态路由参数，显示为"详情"
+  if (segment.startsWith('[') && segment.endsWith(']')) {
+    const paramName = segment.slice(1, -1)
+    if (paramName === 'id') {
+      return t('breadcrumb.detail')
+    }
+    return route.params[paramName] as string || t('breadcrumb.detail')
+  }
+  // 如果没有映射，使用原始路径（首字母大写）
+  return segment
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ')
 }
 
 function setLinks() {
   if (route.fullPath === '/') {
-    return [{ title: '首页', href: '/' }]
+    return [{ title: t('breadcrumb.home'), href: '/' }]
   }
 
   const segments = route.fullPath.split('/').filter(item => item !== '')
 
   const breadcrumbs = segments.map((item, index) => {
-    // 跳过动态路由参数（如 [id]）
+    // 跳过动态路由参数（如 [id]），但显示为"详情"
     if (item.startsWith('[') && item.endsWith(']')) {
       const paramName = item.slice(1, -1)
       const actualValue = route.params[paramName] as string
 
-      // 如果是ID参数，显示为"详情"
       if (paramName === 'id') {
         return {
-          title: '详情',
+          title: t('breadcrumb.detail'),
           href: `/${segments.slice(0, index + 1).join('/')}`,
         }
       }
 
-      // 其他参数显示实际值
       return {
-        title: actualValue || '详情',
+        title: actualValue || t('breadcrumb.detail'),
         href: `/${segments.slice(0, index + 1).join('/')}`,
       }
     }
 
-    // 将路径转换为中文标题
-    let title = pathToChineseMap[item] || item
-
-    // 如果没有映射，尝试将连字符分隔的单词转换为中文
-    if (!pathToChineseMap[item] && item.includes('-')) {
-      const words = item.split('-')
-      title = words.map(word => pathToChineseMap[word] || word).join('')
-    }
-
-    // 如果没有映射，使用原始路径（首字母大写）
-    if (title === item) {
-      title = item
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ')
-    }
+    const title = getBreadcrumbTitle(item)
 
     return {
       title,
@@ -87,7 +92,7 @@ function setLinks() {
     }
   })
 
-  return [{ title: '首页', href: '/' }, ...breadcrumbs]
+  return [{ title: t('breadcrumb.home'), href: '/' }, ...breadcrumbs]
 }
 
 const links = ref<{

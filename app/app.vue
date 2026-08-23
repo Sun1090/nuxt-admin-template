@@ -7,6 +7,8 @@ const colorMode = useColorMode()
 const color = computed(() => colorMode.value === 'dark' ? '#09090b' : '#ffffff')
 const { theme } = useAppSettings()
 
+const { locale } = useI18n()
+
 useHead({
   meta: [
     { charset: 'utf-8' },
@@ -17,7 +19,7 @@ useHead({
     { rel: 'icon', href: '/favicon.ico' },
   ],
   htmlAttrs: {
-    lang: 'en',
+    lang: computed(() => locale.value),
   },
   bodyAttrs: {
     class: computed(() => `color-${theme.value?.color || 'default'} theme-${theme.value?.type || 'default'}`),

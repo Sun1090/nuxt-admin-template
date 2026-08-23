@@ -34,3 +34,4 @@
 - Pinia - 状态管理
 - VueUse - Vue 组合式工具集
 - Vue Sonner - Toast 通知
+- @nuxtjs/i18n - 国际化（vue-i18n）

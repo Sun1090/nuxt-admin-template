@@ -37,7 +37,21 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/fonts',
+    '@nuxtjs/i18n',
   ],
+
+  i18n: {
+    lazy: true,
+    langDir: 'locales',
+    strategy: 'no_prefix',
+    defaultLocale: 'zh-CN',
+    locales: [
+      { code: 'en', language: 'en', name: 'English', file: 'en.json' },
+      { code: 'zh-CN', language: 'zh-CN', name: '中文', file: 'zh-CN.json' },
+    ],
+    detectBrowserLanguage: false,
+    vueI18n: 'i18n.config.ts',
+  },
 
   shadcn: {
     /**
@@ -78,61 +92,6 @@ export default defineNuxtConfig({
       wasm: true,
     },
     timing: true,
-    // 增加请求超时时间
-    routeRules: {
-      // API 路由 - 无缓存
-      '/api/**': {
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-          'Connection': 'keep-alive',
-        },
-      },
-
-      // 仪表盘
-      '/dashboard': {
-        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
-      },
-
-      // 系统管理 - 使用通配符覆盖所有子路由
-      '/systems/**': {
-        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
-      },
-
-      // 认证页面
-      '/login': {
-        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
-      },
-
-      // 静态资源 - 长期缓存
-      '/_nuxt/**': {
-        headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
-      },
-      '/assets/**': {
-        headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
-      },
-      '/favicon.ico': {
-        headers: { 'Cache-Control': 'public, max-age=86400' },
-      },
-      '/**/*.{png,jpg,jpeg,gif,webp,svg,ico}': {
-        headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
-      },
-      '/**/*.{css,js}': {
-        headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
-      },
-    },
-    // // 根据部署环境调整配置
-    // ...(process.env.VERCEL ? {
-    //   // Vercel 环境：使用标准配置
-    // } : process.env.NETLIFY ? {
-    //   // Netlify 环境：确保 Drizzle 正确打包
-    //   experimental: {
-    //     wasm: true,
-    //   },
-    // } : {
-    //   // 其他环境：使用标准配置
-    // }),
   },
 
   colorMode: {
@@ -156,17 +115,64 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // ========== 缓存/头信息规则 ==========
+    // API 路由 - 无缓存
+    '/api/**': {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Connection': 'keep-alive',
+      },
+    },
+
+    // 仪表盘
+    '/dashboard': {
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+    },
+
+    // 系统管理 - 使用通配符覆盖所有子路由
+    '/systems/**': {
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+    },
+
+    // 认证页面
+    '/login': {
+      headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+    },
+
+    // 静态资源 - 长期缓存
+    '/_nuxt/**': {
+      headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
+    },
+    '/assets/**': {
+      headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
+    },
+    '/favicon.ico': {
+      headers: { 'Cache-Control': 'public, max-age=86400' },
+    },
+    '/**/*.{png,jpg,jpeg,gif,webp,svg,ico}': {
+      headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
+    },
+    '/**/*.{css,js}': {
+      headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
+    },
+
     // ========== 重定向规则 ==========
     // 根路径和通用重定向
     '/': { redirect: '/dashboard' },
     '/admin': { redirect: '/dashboard' },
     '/management': { redirect: '/dashboard' },
 
-    // 组件页面重定向
-    '/components': { redirect: '/components/accordion' },
-
     // 设置页面重定向
     '/settings': { redirect: '/settings/profile' },
+
+    // 数据库管理重定向
+    '/database': { redirect: '/systems/database/backup' },
+    '/databases': { redirect: '/systems/database/backup' },
+
+    // 通知重定向
+    '/notification': { redirect: '/systems/notifications' },
 
     // 系统管理重定向
     '/system': { redirect: '/systems/users' },
@@ -179,6 +185,8 @@ export default defineNuxtConfig({
     '/permissions': { redirect: '/systems/permissions' },
     '/api-key': { redirect: '/systems/api-keys' },
     '/api-keys': { redirect: '/systems/api-keys' },
+    // 组件页面重定向
+    '/components': { redirect: '/components/accordion' },
   },
   // 自动导入
   imports: {

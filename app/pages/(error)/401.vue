@@ -4,6 +4,7 @@ definePageMeta({
 })
 
 const router = useRouter()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -12,16 +13,16 @@ const router = useRouter()
       <h1 class="text-[7rem] font-bold leading-tight">
         401
       </h1>
-      <span class="font-medium">未经授权的访问</span>
+      <span class="font-medium">{{ t('error.unauthorized') }}</span>
       <p class="text-center text-muted-foreground">
-        请使用适当的凭据<br>登录以访问此资源。
+        {{ t('error.unauthorizedDesc') }}
       </p>
       <div class="mt-6 flex gap-4">
         <Button variant="outline" @click="router.back()">
-          返回
+          {{ t('error.goBack') }}
         </Button>
         <Button @click="router.push('/')">
-          返回首页
+          {{ t('error.backHome') }}
         </Button>
       </div>
     </div>

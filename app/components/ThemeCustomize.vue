@@ -2,6 +2,7 @@
 import type { ThemeColor, ThemeType } from '@/constants/themes'
 import { THEME_COLORS, THEME_TYPE } from '@/constants/themes'
 
+const { t } = useI18n()
 const { theme, updateAppSettings } = useAppSettings()
 
 const allColors: ThemeColor[] = THEME_COLORS.map(color => color.name)
@@ -40,7 +41,7 @@ const colorMode = useColorMode()
 <template>
   <div class="grid gap-6">
     <div class="space-y-1.5">
-      <Label>颜色</Label>
+      <Label>{{ t('settings.themeColor') }}</Label>
       <div class="grid grid-cols-3 gap-2">
         <template v-for="col in allColors" :key="col">
           <Button
@@ -58,7 +59,7 @@ const colorMode = useColorMode()
       </div>
     </div>
     <div class="space-y-1.5">
-      <Label>字体</Label>
+      <Label>{{ t('settings.font') }}</Label>
       <div class="grid grid-cols-3 gap-2">
         <template v-for="themeType in allTypes" :key="themeType">
           <Button
@@ -73,7 +74,7 @@ const colorMode = useColorMode()
       </div>
     </div>
     <div class="space-y-1.5">
-      <Label>主题</Label>
+      <Label>{{ t('settings.theme') }}</Label>
       <div class="grid grid-cols-3 gap-2">
         <Button
           class="justify-center gap-2"
@@ -82,7 +83,7 @@ const colorMode = useColorMode()
           @click="colorMode.preference = 'light'"
         >
           <Icon name="i-ph-sun-dim-duotone" size="16" />
-          <span class="text-xs capitalize">亮色</span>
+          <span class="text-xs">{{ t('settings.light') }}</span>
         </Button>
         <Button
           class="justify-center gap-2"
@@ -91,7 +92,7 @@ const colorMode = useColorMode()
           @click="colorMode.preference = 'dark'"
         >
           <Icon name="i-ph-moon-stars-duotone" size="16" />
-          <span class="text-xs capitalize">暗色</span>
+          <span class="text-xs">{{ t('settings.dark') }}</span>
         </Button>
         <Button
           class="justify-center gap-2"
@@ -100,7 +101,7 @@ const colorMode = useColorMode()
           @click="colorMode.preference = 'system'"
         >
           <Icon name="i-lucide-monitor" size="16" />
-          <span class="text-xs capitalize">系统</span>
+          <span class="text-xs">{{ t('settings.system') }}</span>
         </Button>
       </div>
     </div>

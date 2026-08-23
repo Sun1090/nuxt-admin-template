@@ -4,6 +4,7 @@ definePageMeta({
 })
 
 const router = useRouter()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -12,17 +13,16 @@ const router = useRouter()
       <h1 class="text-[7rem] font-bold leading-tight">
         403
       </h1>
-      <span class="font-medium">访问被禁止</span>
+      <span class="font-medium">{{ t('error.forbidden') }}</span>
       <p class="text-center text-muted-foreground">
-        您没有权限<br>
-        查看该资源。
+        {{ t('error.forbiddenDesc') }}
       </p>
       <div class="mt-6 flex gap-4">
         <Button variant="outline" @click="router.back()">
-          返回
+          {{ t('error.goBack') }}
         </Button>
         <Button @click="router.push('/')">
-          返回首页
+          {{ t('error.backHome') }}
         </Button>
       </div>
     </div>
